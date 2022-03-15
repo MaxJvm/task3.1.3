@@ -36,7 +36,7 @@ public class UserController {
 
     @PostMapping("/update/")
     public String updateUser(@RequestParam long id, @RequestParam String name, @RequestParam String surname,
-                             @RequestParam String username, @RequestParam String password, @RequestParam String roles,
+                             @RequestParam String username, @RequestParam String password, @RequestParam long[] roles,
                              @RequestParam int age) {
         userService.updateUser(name, surname, username, password, roles, age, id);
         return "redirect:/";
@@ -52,7 +52,7 @@ public class UserController {
 
     @PostMapping("/save/")
     public String saveUser(@RequestParam String name, @RequestParam String surname,
-                           @RequestParam String username, @RequestParam String password, @RequestParam String roles,
+                           @RequestParam String username, @RequestParam String password, @RequestParam long[] roles,
                            @RequestParam int age) {
         userService.createUser(name, surname, username, password, roles, age);
         return "redirect:/";

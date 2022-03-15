@@ -65,13 +65,13 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void createUser(String name, String surname, String username, String password, String roles, int age) {
+    public void createUser(String name, String surname, String username, String password, long[] roles, int age) {
         User user = new User(username, passwordEncoder.encode(password), name, surname, age);
         setRoles(roles, user);
         save(user);
     }
 
-    public void updateUser(String name, String surname, String username, String password, String roles, int age, long id) {
+    public void updateUser(String name, String surname, String username, String password, long[] roles, int age, long id) {
         User user = userRepository.findById(id).get();
         user.setPassword(passwordEncoder.encode(password));
         setRoles(roles, user);
@@ -82,17 +82,10 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    private void setRoles(String roles, User user) {
-        String[] names = roles.split("[\\s,]");
+    private void setRoles(long[] roles, User user) {
         List<Role> roleList = new ArrayList<>();
-        for (String n : names) {
-            Role role = new Role(n);
-            if (roleService.existsByName(n)) {
-                role = roleService.findByName(n);
-            } else {
-                roleService.save(role);
-            }
-            roleList.add(role);
+        for (long n : roles) {
+                roleList.add(roleService.findById(n));
         }
         user.setRoles(roleList);
     }
